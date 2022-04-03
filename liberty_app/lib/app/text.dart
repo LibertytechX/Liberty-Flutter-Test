@@ -1,0 +1,5 @@
+class AppText {
+  AppText._();
+
+
+}
