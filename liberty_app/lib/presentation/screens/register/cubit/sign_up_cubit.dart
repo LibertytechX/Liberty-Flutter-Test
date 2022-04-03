@@ -19,6 +19,8 @@ class SignUpCubit extends Cubit<SignUpState> {
         status: Formz.validate([
           email,
           state.password,
+          state.name,
+          state.phone,
           // state.confirmedPassword,
         ]),
       ),
@@ -36,9 +38,43 @@ class SignUpCubit extends Cubit<SignUpState> {
         password: password,
         // confirmedPassword: confirmedPassword,
         status: Formz.validate([
-          state.email,
           password,
+          state.email,
+          state.name,
+          state.phone,
           // confirmedPassword,
+        ]),
+      ),
+    );
+  }
+
+  void nameChanged(String value) {
+    final name = Name.dirty(value);
+
+    emit(
+      state.copyWith(
+        name: name,
+        status: Formz.validate([
+          name,
+          state.email,
+          state.password,
+          state.phone,
+        ]),
+      ),
+    );
+  }
+
+  void phoneChanged(String value) {
+    final phone = Phone.dirty(value);
+
+    emit(
+      state.copyWith(
+        phone: phone,
+        status: Formz.validate([
+          phone,
+          state.email,
+          state.name,
+          state.password,
         ]),
       ),
     );
@@ -51,23 +87,32 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
     emit(
       state.copyWith(
-        // confirmedPassword: confirmedPassword,
+        confirmedPassword: confirmedPassword,
         status: Formz.validate([
           state.email,
           state.password,
-          // confirmedPassword,
+          confirmedPassword,
         ]),
       ),
     );
   }
 
   Future<void> signUpFormSubmitted() async {
-    if (!state.status.isValidated) return;
-
+    if (!state.status.isValidated) {
+      print('Invalidated');
+      return;
+    } else {
+      print('Phone is:');
+      print(state.phone.value);
+    }
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authenticationRepository.signUp(
-        email: state.email.value,
+        user: User(
+            id: state.email.value,
+            email: state.email.value,
+            name: state.name.value,
+            phone: state.phone.value),
         password: state.password.value,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));

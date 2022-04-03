@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:liberty_app/app/theme.dart';
 
-import '../common/assets_icon.dart';
+import 'package:liberty_app/presentation/screens/project/project.dart';
+import 'package:liberty_app/presentation/widget/common/assets_icon.dart';
 
 class SliverAppScaffold extends StatelessWidget {
   const SliverAppScaffold({
@@ -12,6 +13,7 @@ class SliverAppScaffold extends StatelessWidget {
     this.widgetsAlignment,
     this.title,
     this.floatingIcon,
+    this.fabHandler,
   }) : super(key: key);
 
   /// back Icon to pop the current page
@@ -31,7 +33,7 @@ class SliverAppScaffold extends StatelessWidget {
 
   /// App bar title
   final IconData? floatingIcon;
-
+  final Function()? fabHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class SliverAppScaffold extends StatelessWidget {
                   floatingIcon,
                   size: 38,
                 ),
-                onPressed: () {},
+                onPressed: fabHandler,
               ),
             )
           : null,
@@ -61,6 +63,19 @@ class SliverAppScaffold extends StatelessWidget {
           showUnselectedLabels: false,
           iconSize: 30,
           backgroundColor: AppColors.lightBlue,
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                Navigator.of(context).popUntil((predicate)=>predicate.isFirst);
+
+                break;
+              case 1:
+                Navigator.of(context).push(ProjectListScreen.route());
+                break;
+              case 2:
+                break;
+            }
+          },
           items: [
             BottomNavigationBarItem(
                 icon: Padding(
@@ -130,26 +145,27 @@ class SliverAppScaffold extends StatelessWidget {
               actions: [
                 if (trailingWidget != null)
                   Padding(
-                    padding: const EdgeInsets.only(right: AppSizes.appSideGap * 0.5),
+                    padding:
+                        const EdgeInsets.only(right: AppSizes.appSideGap * 0.5),
                     child: trailingWidget!,
                   ),
               ],
               leading: backIcon != null
                   ? Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: InkWell(
-                  customBorder: circleIconBorder,
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Material(
-                    color: AppColors.transparent,
-                    shape: circleIconBorder,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: backIcon!,
-                    ),
-                  ),
-                ),
-              )
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: InkWell(
+                        customBorder: circleIconBorder,
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Material(
+                          color: AppColors.transparent,
+                          shape: circleIconBorder,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: backIcon!,
+                          ),
+                        ),
+                      ),
+                    )
                   : null,
               title: title,
             ),

@@ -10,7 +10,8 @@ void main() {
       WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp();
       final authenticationRepository = AuthenticationRepository();
-      await authenticationRepository.user.first;
+      var user = await authenticationRepository.user.first;
+      // await authenticationRepository.fireStoreUser(user.email??'').first;
       runApp(App(authenticationRepository: authenticationRepository));
     },
     blocObserver: AppBlocObserver(),

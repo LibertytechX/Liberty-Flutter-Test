@@ -15,6 +15,15 @@
       <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/form_inputs/build" />
       <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/form_inputs/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/form_inputs/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/projects_repository/build" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/projects_repository/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/projects_repository/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/project_api/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/project_api/build" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/project_api/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/firebase_project_api/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/firebase_project_api/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/liberty_app/packages/project_repository/firebase_project_api/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

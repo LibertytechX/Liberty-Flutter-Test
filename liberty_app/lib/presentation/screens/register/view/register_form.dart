@@ -103,29 +103,89 @@ class _PhoneField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 56,
-      child: TextFormField(
-        decoration: InputDecoration(
-          label: const Text('Mobile Number'),
-          suffix: CountryCodePicker(
-            padding: const EdgeInsets.only(top: 20),
-            flagWidth: 30,
-            flagDecoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(4)),
-            onChanged: print,
-            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-            initialSelection: 'ng',
-            favorite: const ['NG'],
-            showCountryOnly: false,
-            showOnlyCountryWhenClosed: false,
-            alignLeft: false,
-            hideMainText: true,
-          ),
-        ),
-        keyboardType: TextInputType.phone,
-      ),
-    );
+    // return SizedBox(
+    //   height: 56,
+    //   child: TextFormField(
+    //     decoration: InputDecoration(
+    //       label: const Text('Mobile Number'),
+    //       suffix: CountryCodePicker(
+    //         padding: const EdgeInsets.only(top: 20),
+    //         flagWidth: 30,
+    //         flagDecoration:
+    //         BoxDecoration(borderRadius: BorderRadius.circular(4)),
+    //         onChanged: print,
+    //         initialSelection: 'ng',
+    //         favorite: const ['NG'],
+    //         showCountryOnly: false,
+    //         showOnlyCountryWhenClosed: false,
+    //         alignLeft: false,
+    //         hideMainText: true,
+    //       ),
+    //     ),
+    //     keyboardType: TextInputType.phone,
+    //   ),
+    // );
+    return BlocBuilder<SignUpCubit, SignUpState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (context, state) {
+          return SizedBox(
+            height: 56,
+            child: TextFormField(
+              key: const Key('signUpForm_phoneInput_textField'),
+              onChanged: (phone) {
+                print(phone);
+                context.read<SignUpCubit>().phoneChanged(phone);
+              },
+              decoration: InputDecoration(
+                label: const Text('Mobile Number'),
+                errorText: state.phone.invalid ? 'invalid phone number' : null,
+                suffix: CountryCodePicker(
+                  padding: const EdgeInsets.only(top: 20),
+                  flagWidth: 30,
+                  flagDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                  onChanged: print,
+                  initialSelection: 'ng',
+                  favorite: const ['NG'],
+                  showCountryOnly: false,
+                  showOnlyCountryWhenClosed: false,
+                  alignLeft: false,
+                  hideMainText: true,
+                ),
+              ),
+              keyboardType: TextInputType.phone,
+            ),
+          );
+        });
+  }
+}
+
+class _NameField extends StatelessWidget {
+  const _NameField({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // return TextFormField(
+    //   decoration: const InputDecoration(
+    //     label: Text('Name'),
+    //   ),
+    //   keyboardType: TextInputType.text,
+    // );
+    return BlocBuilder<SignUpCubit, SignUpState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (context, state) {
+          return TextFormField(
+            key: const Key('signUpForm_nameInput_textField'),
+            onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
+            decoration: InputDecoration(
+              label: const Text('Name'),
+              errorText: state.name.invalid ? 'invalid name' : null,
+            ),
+            keyboardType: TextInputType.text,
+          );
+        });
   }
 }
 
@@ -144,25 +204,12 @@ class _SingUpButton extends StatelessWidget {
               : ActionButton(
                   text: 'Create account',
                   onPressed: () {
-                    if (state.status.isValidated) {
-                      context.read<SignUpCubit>().signUpFormSubmitted();
-                    }
+
+                    // if (state.status.isValidated) {
+                    context.read<SignUpCubit>().signUpFormSubmitted();
+                    // }
                   },
                 );
         });
-  }
-}
-
-class _NameField extends StatelessWidget {
-  const _NameField({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: const InputDecoration(label: Text('Name')),
-      keyboardType: TextInputType.text,
-    );
   }
 }

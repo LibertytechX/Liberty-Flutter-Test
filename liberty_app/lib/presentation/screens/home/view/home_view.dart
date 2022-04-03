@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SliverAppScaffold(
+      fabHandler: () => Navigator.of(context).push(AddProjectScreen.route()),
       /// page Title
       title: Column(
         mainAxisAlignment: MainAxisAlignment.start,

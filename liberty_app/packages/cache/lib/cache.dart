@@ -14,6 +14,11 @@ class CacheClient {
     _cache[key] = value;
   }
 
+  /// clear cache
+  void clear({required String key}) {
+    _cache[key] = {key:null};
+  }
+
   /// Looks up the value for the provided [key].
   /// Defaults to `null` if no value exists for the provided key.
   T? read<T extends Object>({required String key}) {
