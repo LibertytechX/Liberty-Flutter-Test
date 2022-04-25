@@ -16,7 +16,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 List<SingleChildWidget> providers = [
@@ -25,7 +24,6 @@ List<SingleChildWidget> providers = [
 ];
 
 List<SingleChildWidget> independentServices = [
-  Provider.value(value: SharedPreferences.getInstance()),
   Provider.value(value: FirebaseFirestore.instance),
   Provider.value(value: FirebaseStorage.instance),
   Provider.value(value: FirebaseAuth.instance),

@@ -9,4 +9,5 @@ class RoutePaths {
   static const String projectListPage = 'projectList';
   static const String createTaskPage = 'createTask';
   static const String taskListPage = 'taskList';
+  static const String profilePage = 'profile';
 }

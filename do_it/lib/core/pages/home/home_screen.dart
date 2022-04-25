@@ -2,11 +2,10 @@ import 'package:do_it/core/base_page.dart';
 import 'package:do_it/core/constants/app_colors.dart';
 import 'package:do_it/core/pages/home/home_screen_provider.dart';
 import 'package:do_it/core/router/route_paths.dart';
+import 'package:do_it/features/profile/presentation/pages/profile/profile_page.dart';
 import 'package:do_it/features/to_do/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -21,27 +20,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BasePage<HomePageProvider>(
       child: null,
-      provider: HomePageProvider(
-        sharedPreferences: Provider.of(context)
-      ),
+      provider: HomePageProvider(),
       builder: (context, provider, child) {
         return Scaffold(
-          // backgroundColor: Colors.black.withOpacity(0.1),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: KeyboardVisibilityBuilder(
-            builder: (context, isKeyboardVisible) {
-              return Visibility(
-                visible: !isKeyboardVisible,
-                child: FloatingActionButton(
-                  onPressed: () => Navigator.of(context).pushNamed(
-                    RoutePaths.createProjectPage
-                  ),
-                  child: const Icon(MdiIcons.plus),
-                  backgroundColor: AppColors.primaryColor,
-                  // mini: true,
-                ),
-              );
-            }
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => Navigator.of(context).pushNamed(
+              RoutePaths.createProjectPage
+            ),
+            child: const Icon(MdiIcons.plus),
+            backgroundColor: AppColors.primaryColor,
+            // mini: true,
           ),
           bottomNavigationBar: BottomAppBar(
             shape: const CircularNotchedRectangle(),
@@ -95,7 +84,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               DashboardPage(),
               Container(),
-              Container(),
+              ProfilePage(),
             ],
           ),
         );

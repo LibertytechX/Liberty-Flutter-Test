@@ -17,7 +17,7 @@ Widget customTextSmall(
     maxLines: maxLines,
     style: TextStyle(
       decoration: null,
-      fontFamily: 'Satoshi',
+      fontFamily: 'Mark_Pro',
       fontSize: fontSize,
       height: lineHeight,
       fontWeight: fontWeight,
@@ -45,7 +45,7 @@ Widget customTextNormal(
     overflow: TextOverflow.ellipsis,
     maxLines: maxLines,
     style: TextStyle(
-      fontFamily: 'TomatoGrotesk',
+      fontFamily: 'Mark_Pro',
       decoration: decoration,
       fontSize: fontSize,
       height: lineHeight,
@@ -72,7 +72,7 @@ Widget customTextMedium(
     textAlign: alignment,
     maxLines: maxLines,
     style: TextStyle(
-      fontFamily: 'TomatoGrotesk',
+      fontFamily: 'Mark_Pro',
       fontSize: fontSize,
       height: lineHeight,
       fontWeight: fontWeight,
@@ -98,7 +98,7 @@ Widget customTextLarge(
     textAlign: alignment,
     maxLines: maxLines,
     style: TextStyle(
-      fontFamily: 'TomatoGrotesk',
+      fontFamily: 'Mark_Pro',
       fontSize: fontSize,
       height: lineHeight,
       fontWeight: fontWeight,
@@ -124,7 +124,7 @@ Widget customTextExtraLarge(
     textAlign: alignment,
     maxLines: maxLines,
     style: TextStyle(
-      fontFamily: 'TomatoGrotesk',
+      fontFamily: 'Mark_Pro',
       fontSize: fontSize,
       height: lineHeight,
       fontWeight: fontWeight,

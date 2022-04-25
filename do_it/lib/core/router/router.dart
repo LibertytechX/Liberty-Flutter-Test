@@ -3,6 +3,7 @@ import 'package:do_it/core/router/route_paths.dart';
 import 'package:do_it/features/authentication/presentation/pages/auth_selection/auth_selection_page.dart';
 import 'package:do_it/features/authentication/presentation/pages/create_account/create_account_page.dart';
 import 'package:do_it/features/authentication/presentation/pages/login/login_page.dart';
+import 'package:do_it/features/profile/presentation/pages/profile/profile_page.dart';
 import 'package:do_it/features/to_do/data/models/user_profile.dart';
 import 'package:do_it/features/to_do/presentation/pages/create_project/create_project_page.dart';
 import 'package:do_it/features/to_do/presentation/pages/create_task/create_task_page.dart';
@@ -44,6 +45,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => TaskListPage(
           projectId: arg
         ));
+      case RoutePaths.profilePage:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
