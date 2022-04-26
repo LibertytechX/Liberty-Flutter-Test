@@ -2,6 +2,11 @@ import 'package:do_it/features/authentication/data/datasources/remote_data_sourc
 import 'package:do_it/features/authentication/data/repository/auth_repository_impl.dart';
 import 'package:do_it/features/authentication/domain/usecases/create_account.dart';
 import 'package:do_it/features/authentication/domain/usecases/login.dart';
+import 'package:do_it/features/profile/data/datasources/remote_data_source_impl.dart';
+import 'package:do_it/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:do_it/features/profile/domain/usecases/get_user_profile.dart' as profile;
+import 'package:do_it/features/profile/domain/usecases/logout.dart';
+import 'package:do_it/features/profile/domain/usecases/update_user_profile.dart';
 import 'package:do_it/features/to_do/data/datasources/remote_data_source_impl.dart';
 import 'package:do_it/features/to_do/data/repository/to_do_repository_impl.dart';
 import 'package:do_it/features/to_do/domain/usecases/create_project.dart';
@@ -85,5 +90,31 @@ List<SingleChildWidget> dependentServices = [
   ProxyProvider<ToDoRepositoryImpl, GetTasks>(
     update: (context, repository, getAppUserState)
       => GetTasks(repository: repository)
+  ),
+
+  // PROFILE FEATURE DEPENDENCIES
+  ProxyProvider3<FirebaseAuth, FirebaseFirestore, FirebaseStorage, ProfileRemoteDataSourceImpl>(
+    update: (context, firebaseAuth, firestore, storage, authRemoteDataSource)
+      => ProfileRemoteDataSourceImpl(
+        firebaseAuth: firebaseAuth, 
+        firestore: firestore,
+        storage: storage
+      )
+  ),
+  ProxyProvider<ProfileRemoteDataSourceImpl, ProfileRepositoryImpl>(
+    update: (context, dataSource, repository)
+      => ProfileRepositoryImpl(dataSource: dataSource)
+  ),
+  ProxyProvider<ProfileRepositoryImpl, UpdateUserProfile>(
+    update: (context, repository, getAppUserState)
+      => UpdateUserProfile(repository: repository)
+  ),
+  ProxyProvider<ProfileRepositoryImpl, profile.GetUserProfile>(
+    update: (context, repository, getAppUserState)
+      => profile.GetUserProfile(repository: repository)
+  ),
+  ProxyProvider<ProfileRepositoryImpl, Logout>(
+    update: (context, repository, getAppUserState)
+      => Logout(repository: repository)
   ),
 ];

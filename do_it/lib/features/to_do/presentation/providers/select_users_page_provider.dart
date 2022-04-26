@@ -2,7 +2,7 @@ import 'package:do_it/core/usecases/usecase.dart';
 import 'package:do_it/core/util/visual_alerts.dart';
 import 'package:do_it/features/to_do/data/models/user_profile.dart';
 import 'package:do_it/features/to_do/domain/usecases/get_all_users.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SelectUsersPageProvider with ChangeNotifier {
   final GetAllUsers getAllUsers;

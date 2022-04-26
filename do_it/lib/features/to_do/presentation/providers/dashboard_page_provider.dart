@@ -1,5 +1,6 @@
 import 'package:do_it/core/router/route_paths.dart';
 import 'package:do_it/core/usecases/usecase.dart';
+import 'package:do_it/core/util/custom_change_notifier.dart';
 import 'package:do_it/features/to_do/data/models/project.dart';
 import 'package:do_it/features/to_do/data/models/task.dart';
 import 'package:do_it/features/to_do/data/models/user_profile.dart';
@@ -30,6 +31,7 @@ class DashboardPageProvider with ChangeNotifier {
 
     loading = true;
     initRan = true;
+    notifyListeners();
 
     final result = await getUserProfile(NoParams());
     result.fold(

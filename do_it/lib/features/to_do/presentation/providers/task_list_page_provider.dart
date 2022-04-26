@@ -1,6 +1,6 @@
 import 'package:do_it/features/to_do/data/models/task.dart';
 import 'package:do_it/features/to_do/domain/usecases/get_tasks.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class TaskListPageProvider with ChangeNotifier {
   final GetTasks getTasks;

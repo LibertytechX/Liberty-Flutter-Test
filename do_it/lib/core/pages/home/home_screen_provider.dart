@@ -1,6 +1,7 @@
+import 'package:do_it/core/util/custom_change_notifier.dart';
 import 'package:flutter/material.dart';
 
-class HomePageProvider extends ChangeNotifier {
+class HomePageProvider with ChangeNotifier {
   final pageController = PageController();
   int currentIndex = 0;
   bool initRan = false;

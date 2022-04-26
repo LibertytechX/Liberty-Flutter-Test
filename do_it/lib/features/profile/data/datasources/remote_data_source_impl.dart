@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:do_it/core/error/exceptions.dart';
 import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:do_it/core/constants/firebase_constants.dart';
@@ -53,6 +54,43 @@ class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
       'id': user.id,
       ...user.data()
     })).toList();
+  }
+
+  @override
+  Future<void> updateUserProfile(String? name, File? image) async {
+    final user = firebaseAuth.currentUser;
+    if (user == null) throw Exception('Unauthorized');
+
+    final Map<String, dynamic> updateData = {};
+
+    final userCollection = firestore.collection(FirestoreCollections.user);
+    final userDocRef = userCollection.doc(user.uid);
+    
+    if (image != null) {
+      final uploadTask = storage.ref('users/${user.uid}/').putFile(changeFilename(image, 'image'));
+      uploadTask.catchError((error) {
+        throw RemoteException(
+          message: 'An error occurred while uploading image. Please try again'
+        );
+      });
+      final taskSnapshot = await uploadTask.whenComplete(() => null);
+      final downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+      updateData['avatar'] = downloadUrl;
+    }
+
+    if (name != null) {
+      updateData['name'] = name;
+    }
+
+    if (updateData.isNotEmpty) {
+      await userDocRef.update(updateData);
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    await firebaseAuth.signOut();
   }
 }
 

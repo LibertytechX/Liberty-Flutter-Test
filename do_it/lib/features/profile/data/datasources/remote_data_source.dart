@@ -7,4 +7,10 @@ abstract class ProfileRemoteDataSource {
 
   /// Throws a [RemoteException] for all errors
   Future<List<UserProfileModel>> getAllUsers();
+
+  /// Throws a [RemoteException] for all errors
+  Future<void> updateUserProfile(String? name, File? image);
+
+  /// Throws a [RemoteException] for all errors
+  Future<void> logout();
 }

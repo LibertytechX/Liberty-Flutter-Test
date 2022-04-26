@@ -1,7 +1,7 @@
 import 'package:do_it/core/usecases/usecase.dart';
 import 'package:do_it/features/to_do/data/models/project.dart';
 import 'package:do_it/features/to_do/domain/usecases/get_projects.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ProjectListPageProvider with ChangeNotifier {
   final GetProjects getProjects;

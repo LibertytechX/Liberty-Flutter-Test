@@ -11,7 +11,10 @@ void main() async {
   runApp(MyApp());
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
+  
   MyApp({Key? key}) : super(key: key);
 
   final Future<FirebaseApp> _firebaseInitialization = Firebase.initializeApp();
@@ -50,9 +53,12 @@ class MyFirebaseApp extends StatelessWidget {
       builder: (context, child) {
         return ChangeNotifierProvider.value(
           value: AppModel(
-            firebaseMessaging: Provider.of(context)
+            firebaseMessaging: Provider.of(context),
+            firebaseAuth: Provider.of(context),
+            context: context
           ),
           child: MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             initialRoute: RoutePaths.authSelectionPage,
             onGenerateRoute: AppRouter.generateRoute,
@@ -71,7 +77,7 @@ class FirebaseError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         body: Center(
           child: Text('An error occurred initialising Firebase'),

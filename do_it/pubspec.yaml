@@ -43,6 +43,7 @@ dependencies:
   intl_phone_field: ^3.1.0
   percent_indicator: ^3.0.1
   image_picker: ^0.8.4+8
+  flutter_keyboard_visibility: ^5.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

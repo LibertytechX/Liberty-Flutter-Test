@@ -7,7 +7,7 @@ import 'package:do_it/core/constants/texts.dart';
 import 'package:do_it/core/router/route_paths.dart';
 import 'package:do_it/core/util/input_validators.dart';
 import 'package:do_it/features/to_do/data/models/user_profile.dart';
-import 'package:do_it/features/to_do/presentation/pages/create_project/widgets/image_mode_modal.dart';
+import 'package:do_it/shared/widgets/image_mode_modal.dart';
 import 'package:do_it/features/to_do/presentation/providers/create_project_page_provider.dart';
 import 'package:do_it/features/to_do/presentation/widgets/selected_users.dart';
 import 'package:do_it/features/to_do/presentation/widgets/tags_input.dart';

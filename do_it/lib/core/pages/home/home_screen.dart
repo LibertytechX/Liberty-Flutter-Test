@@ -5,6 +5,7 @@ import 'package:do_it/core/router/route_paths.dart';
 import 'package:do_it/features/profile/presentation/pages/profile/profile_page.dart';
 import 'package:do_it/features/to_do/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,13 +25,20 @@ class _HomePageState extends State<HomePage> {
       builder: (context, provider, child) {
         return Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => Navigator.of(context).pushNamed(
-              RoutePaths.createProjectPage
-            ),
-            child: const Icon(MdiIcons.plus),
-            backgroundColor: AppColors.primaryColor,
-            // mini: true,
+          floatingActionButton: KeyboardVisibilityBuilder(
+            builder: (context, isKeyboardVisible) {
+              return Visibility(
+                visible: !isKeyboardVisible,
+                child: FloatingActionButton(
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    RoutePaths.createProjectPage
+                  ),
+                  child: const Icon(MdiIcons.plus),
+                  backgroundColor: AppColors.primaryColor,
+                  // mini: true,
+                ),
+              );
+            }
           ),
           bottomNavigationBar: BottomAppBar(
             shape: const CircularNotchedRectangle(),

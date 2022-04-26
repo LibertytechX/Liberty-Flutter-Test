@@ -79,7 +79,6 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
       });
       final taskSnapshot = await uploadTask.whenComplete(() => null);
       final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-      print(downloadUrl);
       await ref.set({
         ...project.toMap()..removeWhere((key, value) => key == 'id' || key == 'image'),
         'image': downloadUrl,
