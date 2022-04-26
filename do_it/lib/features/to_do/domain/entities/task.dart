@@ -1,3 +1,4 @@
+import 'package:do_it/features/to_do/data/models/user_profile.dart';
 import 'package:equatable/equatable.dart';
 
 class Task extends Equatable {
@@ -7,7 +8,7 @@ class Task extends Equatable {
   final String name;
   final String created;
   final String end;
-  final List<String> staffs;
+  final List<UserProfileModel> staffs;
   final List<String> tags;
   final String description;
 

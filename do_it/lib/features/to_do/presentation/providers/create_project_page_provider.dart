@@ -76,9 +76,10 @@ class CreateProjectPageProvider with ChangeNotifier {
         name: nameController.value.text,
         created: createdDate.toIso8601String(),
         end: endDate.toIso8601String(), 
-        staffs: selectedUsers != null 
-          ? selectedUsers!.map((user) => user.id).toList()
-          : [],
+        // staffs: selectedUsers != null 
+        //   ? selectedUsers!.map((user) => user.id).toList()
+        //   : [],
+        staffs: selectedUsers!,
         tags: tags,
         description: descriptionController.value.text
       ),

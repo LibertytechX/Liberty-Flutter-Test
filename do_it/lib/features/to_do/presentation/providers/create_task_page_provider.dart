@@ -1,5 +1,4 @@
 import 'package:do_it/core/error/failures.dart';
-import 'package:do_it/core/util/custom_change_notifier.dart';
 import 'package:do_it/core/util/visual_alerts.dart';
 import 'package:do_it/features/to_do/data/models/task.dart';
 import 'package:do_it/features/to_do/data/models/user_profile.dart';
@@ -57,9 +56,7 @@ class CreateTaskPageProvider with ChangeNotifier {
         end: endDate.toIso8601String(),
         description: commentController.value.text,
         name: nameController.value.text,
-        staffs: selectedUsers != null 
-          ? selectedUsers!.map((user) => user.id).toList()
-          : [],
+        staffs: selectedUsers!,
         tags: tags,
         projectId: projectId
       )

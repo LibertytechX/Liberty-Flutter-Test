@@ -1,3 +1,4 @@
+import 'package:do_it/features/to_do/data/models/user_profile.dart';
 import 'package:do_it/features/to_do/domain/entities/project.dart';
 
 class ProjectModel extends Project {
@@ -7,7 +8,7 @@ class ProjectModel extends Project {
     required String name, 
     required String created, 
     required String end, 
-    required List<String> staffs, 
+    required List<UserProfileModel> staffs, 
     required List<String> tags, 
     required String description,
     String? image
@@ -30,7 +31,9 @@ class ProjectModel extends Project {
       name: snapshot['name'], 
       created: snapshot['created'], 
       end: snapshot['end'], 
-      staffs: List<String>.from(snapshot['staffs']), 
+      staffs: List<Map<String, dynamic>>.from(snapshot['staffs']).map(
+        (i) => UserProfileModel.fromSnapshot(i)
+      ).toList(), 
       tags: List<String>.from(snapshot['tags']), 
       description: snapshot['description'],
       image: snapshot['image']
@@ -44,7 +47,7 @@ class ProjectModel extends Project {
       'name': name,
       'created': created,
       'end': end,
-      'staffs': staffs,
+      'staffs': staffs.map((e) => e.toMap()).toList(),
       'tags': tags,
       'description': description,
       'image': image
