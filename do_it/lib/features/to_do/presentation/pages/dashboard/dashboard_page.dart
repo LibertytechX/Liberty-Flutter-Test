@@ -118,15 +118,13 @@ class DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCli
                             );
                             provider.initGetTasks();
                           },
-                          child: Expanded(
-                            child: DashboardCard(
-                              background: AppColors.primaryColor.withOpacity(0.1),
-                              color: AppColors.primaryColor,
-                              icon: MdiIcons.clipboardOutline,
-                              label: 'Tasks',
-                              value: provider.tasks == null
-                                  ? 'N/A' : '${provider.tasks!.length}',
-                            ),
+                          child: DashboardCard(
+                            background: AppColors.primaryColor.withOpacity(0.1),
+                            color: AppColors.primaryColor,
+                            icon: MdiIcons.clipboardOutline,
+                            label: 'Tasks',
+                            value: provider.tasks == null
+                                ? 'N/A' : '${provider.tasks!.length}',
                           ),
                         ),
                       ),
