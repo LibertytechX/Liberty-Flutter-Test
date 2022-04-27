@@ -1,5 +1,4 @@
 import 'package:do_it/features/authentication/domain/entities/create_account_info.dart';
-import 'package:provider/provider.dart';
 
 class CreateAccountInfoModel extends CreateAccountInfo {
   CreateAccountInfoModel({

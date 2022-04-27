@@ -92,11 +92,12 @@ class DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCli
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             if (provider.projects == null) return;
                             Navigator.of(context).pushNamed(
                               RoutePaths.projectListPage
                             );
+                            provider.initGetProjects();
                           },
                           child: DashboardCard(
                             background: AppColors.orange.withOpacity(0.1),
@@ -110,13 +111,23 @@ class DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCli
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: DashboardCard(
-                          background: AppColors.primaryColor.withOpacity(0.1),
-                          color: AppColors.primaryColor,
-                          icon: MdiIcons.clipboardOutline,
-                          label: 'Tasks',
-                          value: provider.tasks == null
-                              ? 'N/A' : '${provider.tasks!.length}',
+                        child: InkWell(
+                          onTap: () async {
+                            await Navigator.of(context).pushNamed(
+                              RoutePaths.taskListPage
+                            );
+                            provider.initGetTasks();
+                          },
+                          child: Expanded(
+                            child: DashboardCard(
+                              background: AppColors.primaryColor.withOpacity(0.1),
+                              color: AppColors.primaryColor,
+                              icon: MdiIcons.clipboardOutline,
+                              label: 'Tasks',
+                              value: provider.tasks == null
+                                  ? 'N/A' : '${provider.tasks!.length}',
+                            ),
+                          ),
                         ),
                       ),
                     ],

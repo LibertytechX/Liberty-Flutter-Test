@@ -93,6 +93,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       const SizedBox(height: 18),
                       IntlPhoneField(
                         controller: provider.phoneController,
+                        onChanged: (phone) {
+                          provider.phoneNumber = phone.completeNumber;
+                        },
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(

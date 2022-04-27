@@ -23,8 +23,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    
     return BasePage<LoginPageProvider>(
       child: null,
       provider: LoginPageProvider(
@@ -119,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: InkWell(
                     onTap: () => Navigator.of(context).pushNamed(
-                      RoutePaths.loginPage
+                      RoutePaths.createAccountPage
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

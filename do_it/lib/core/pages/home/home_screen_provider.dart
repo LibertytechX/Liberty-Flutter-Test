@@ -1,4 +1,3 @@
-import 'package:do_it/core/util/custom_change_notifier.dart';
 import 'package:flutter/material.dart';
 
 class HomePageProvider with ChangeNotifier {

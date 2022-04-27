@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:do_it/core/error/exceptions.dart';
 import 'package:do_it/core/util/error_to_message_mapper.dart';
@@ -85,9 +87,10 @@ class ToDoRepositoryImpl extends ToDoRepository {
       return Left(RemoteFailure(message: e.message));
     } on DioError catch(e) {
       print(e.requestOptions.uri);
-      print(e.requestOptions.data);
+      print(json.encode(e.requestOptions.data));
       print(e.response!.statusCode);
       print(e.response!.statusMessage);
+      print(e.response!.data);
       return Left(RemoteFailure(message: 'An error occurred. Please try again'));
     } on Exception catch(e) {
       print(e);
@@ -99,6 +102,22 @@ class ToDoRepositoryImpl extends ToDoRepository {
   Future<Either<Failure, List<TaskModel>>> getTasks(String? projectId) async {
     try {
       final result = await dataSource.getTasks(projectId);
+      return Right(result);
+    } on FirebaseAuthException catch(e) {
+      return Left(RemoteFailure(message: getFirebaseErrorMessageFromCode(e.code)));
+    } on RemoteException catch(e) {
+      return Left(RemoteFailure(message: e.message));
+    } on Exception {
+      return Left(RemoteFailure(message: 'An error occurred. Please try again'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stream<QuerySnapshot<Map<String, dynamic>>>>> getTasksStream(
+    String? projectId
+  ) async {
+    try {
+      final result = await dataSource.getTasksStream(projectId);
       return Right(result);
     } on FirebaseAuthException catch(e) {
       return Left(RemoteFailure(message: getFirebaseErrorMessageFromCode(e.code)));
