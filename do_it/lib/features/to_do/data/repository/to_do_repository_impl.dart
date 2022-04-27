@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:do_it/core/error/exceptions.dart';
 import 'package:do_it/core/util/error_to_message_mapper.dart';
 import 'package:do_it/features/to_do/data/datasources/remote_data_source_impl.dart';
@@ -82,6 +83,12 @@ class ToDoRepositoryImpl extends ToDoRepository {
       return Left(RemoteFailure(message: getFirebaseErrorMessageFromCode(e.code)));
     } on RemoteException catch(e) {
       return Left(RemoteFailure(message: e.message));
+    } on DioError catch(e) {
+      print(e.requestOptions.uri);
+      print(e.requestOptions.data);
+      print(e.response!.statusCode);
+      print(e.response!.statusMessage);
+      return Left(RemoteFailure(message: 'An error occurred. Please try again'));
     } on Exception catch(e) {
       print(e);
       return Left(RemoteFailure(message: 'An error occurred. Please try again'));

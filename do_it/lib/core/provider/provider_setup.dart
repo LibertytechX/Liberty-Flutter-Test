@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:do_it/core/constants/api.dart';
 import 'package:do_it/features/authentication/data/datasources/remote_data_source_impl.dart';
 import 'package:do_it/features/authentication/data/repository/auth_repository_impl.dart';
 import 'package:do_it/features/authentication/domain/usecases/create_account.dart';
@@ -32,7 +34,10 @@ List<SingleChildWidget> independentServices = [
   Provider.value(value: FirebaseFirestore.instance),
   Provider.value(value: FirebaseStorage.instance),
   Provider.value(value: FirebaseAuth.instance),
-  Provider.value(value: FirebaseMessaging.instance)
+  Provider.value(value: FirebaseMessaging.instance),
+  Provider.value(value: Dio(BaseOptions(
+    baseUrl: APIEndpoints.baseUrl
+  ))),
 ];
 
 List<SingleChildWidget> dependentServices = [
@@ -55,12 +60,13 @@ List<SingleChildWidget> dependentServices = [
   ),
 
   // DASHBOARD FEATURE DEPENDENCIES
-  ProxyProvider3<FirebaseAuth, FirebaseFirestore, FirebaseStorage, ToDoRemoteDataSourceImpl>(
-    update: (context, firebaseAuth, firestore, storage, authRemoteDataSource)
+  ProxyProvider4<FirebaseAuth, FirebaseFirestore, FirebaseStorage, Dio, ToDoRemoteDataSourceImpl>(
+    update: (context, firebaseAuth, firestore, storage, dio, authRemoteDataSource)
       => ToDoRemoteDataSourceImpl(
         firebaseAuth: firebaseAuth, 
         firestore: firestore,
-        storage: storage
+        storage: storage,
+        httpClient: dio
       )
   ),
   ProxyProvider<ToDoRemoteDataSourceImpl, ToDoRepositoryImpl>(

@@ -56,7 +56,7 @@ class CreateTaskPageProvider with ChangeNotifier {
         end: endDate.toIso8601String(),
         description: commentController.value.text,
         name: nameController.value.text,
-        staffs: selectedUsers!,
+        staffs: selectedUsers ?? [],
         tags: tags,
         projectId: projectId
       )

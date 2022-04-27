@@ -43,9 +43,13 @@ class ProfileRepositoryImpl extends ProfileRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateUserProfile(String? name, File? image) async {
+  Future<Either<Failure, void>> updateUserProfile(
+    String? name, 
+    File? image,
+    UserProfileModel oldProfile
+  ) async {
     try {
-      await dataSource.updateUserProfile(name, image);
+      await dataSource.updateUserProfile(name, image, oldProfile);
       return Right(null);
     } on FirebaseAuthException catch(e) {
       return Left(RemoteFailure(message: getFirebaseErrorMessageFromCode(e.code)));

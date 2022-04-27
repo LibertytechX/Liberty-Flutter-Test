@@ -56,7 +56,7 @@ class _TaskListPageState extends State<TaskListPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               customTextMedium(
-                                'You have not added any tasks to this project'
+                                'This project does not have any tasks assigned'
                               ),
                               TextButton(
                                 onPressed: () {

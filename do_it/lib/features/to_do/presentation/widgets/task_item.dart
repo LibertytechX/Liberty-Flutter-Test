@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:do_it/core/constants/app_colors.dart';
 import 'package:do_it/core/constants/texts.dart';
 import 'package:do_it/features/to_do/data/models/task.dart';
@@ -73,29 +74,44 @@ class TaskItem extends StatelessWidget {
                   child: Wrap(
                     spacing: 4,
                     runSpacing: 4,
-                    children: [
-                      CircleAvatar(
+                    children: task.staffs.map((staff) {
+                      return CircleAvatar(
                         radius: 12,
-                        child: Image.asset(
-                          'asset/images/banner.png',
-                          fit: BoxFit.cover,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: CachedNetworkImage(
+                            width: 24,
+                            height: 24,
+                            imageUrl: staff.avatar ?? '',
+                            errorWidget: (context, _, __) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.grey,
+                                  shape: BoxShape.circle
+                                ),
+                                child: Icon(
+                                  MdiIcons.imageOutline,
+                                  size: 18,
+                                ),
+                              );
+                            },
+                            placeholder: (context, _) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.grey,
+                                  shape: BoxShape.circle
+                                ),
+                                child: Icon(
+                                  MdiIcons.imageOutline,
+                                  size: 18,
+                                ),
+                              );
+                            },
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      CircleAvatar(
-                        radius: 12,
-                        child: Image.asset(
-                          'asset/images/banner.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 12,
-                        child: Image.asset(
-                          'asset/images/banner.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                 ),
                 const SizedBox(width: 12),

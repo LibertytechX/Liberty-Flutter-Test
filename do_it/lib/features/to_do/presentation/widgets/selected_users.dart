@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:do_it/core/constants/app_colors.dart';
 import 'package:do_it/core/constants/texts.dart';
 import 'package:do_it/features/to_do/data/models/user_profile.dart';
@@ -67,31 +68,61 @@ class _User extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   width: 24,
-    //   height: 24,
-    //   decoration: BoxDecoration(
-    //     color: Colors.green,
-    //     shape: BoxShape.circle
-    //   ),
-    // );
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF0184D6), 
-            Color(0xFF004067)
-          ]
+    if (user.avatar == null || user.avatar!.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF0184D6), 
+              Color(0xFF004067)
+            ]
+          ),
+          shape: BoxShape.circle
         ),
-        shape: BoxShape.circle
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(6),
-        child: customTextSmall(
-          '${user.name.split(' ')[0][0]} ${user.name.split(' ')[1][0]}',
-          textColor: Colors.white,
-          fontWeight: FontWeight.w600
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: customTextSmall(
+            '${user.name.split(' ')[0][0]} ${user.name.split(' ')[1][0]}',
+            textColor: Colors.white,
+            fontWeight: FontWeight.w600
+          ),
         ),
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(19),
+      child: CachedNetworkImage(
+        width: 24,
+        height: 24,
+        imageUrl: user.avatar ?? '',
+        errorWidget: (context, _, __) {
+          return Container(
+            decoration: BoxDecoration(
+              color: AppColors.grey,
+              shape: BoxShape.circle
+            ),
+            child: Icon(
+              Icons.person,
+              size: 20,
+              color: Colors.black45,
+            ),
+          );
+        },
+        placeholder: (context, _) {
+          return Container(
+            decoration: BoxDecoration(
+              color: AppColors.grey,
+              shape: BoxShape.circle
+            ),
+            child: Icon(
+              Icons.person,
+              size: 28,
+              color: Colors.black45,
+            ),
+          );
+        },
+        fit: BoxFit.cover,
       ),
     );
   }

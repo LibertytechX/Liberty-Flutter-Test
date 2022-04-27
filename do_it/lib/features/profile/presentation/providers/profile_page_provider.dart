@@ -73,7 +73,8 @@ class ProfilePageProvider with ChangeNotifier {
     final params = UpdateUserProfileParams(
       image: pickedImage != null ? File(pickedImage!.path) : null,
       name: nameController.value.text != userProfile!.name 
-        ? nameController.value.text : null
+        ? nameController.value.text : null,
+      oldProfile: userProfile!
     );
     final result = await updateUserProfile(params);
     result.fold(

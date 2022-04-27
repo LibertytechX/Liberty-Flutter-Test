@@ -57,7 +57,11 @@ class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
   }
 
   @override
-  Future<void> updateUserProfile(String? name, File? image) async {
+  Future<void> updateUserProfile(
+    String? name, 
+    File? image, 
+    UserProfileModel oldProfile
+  ) async {
     final user = firebaseAuth.currentUser;
     if (user == null) throw Exception('Unauthorized');
 
@@ -65,6 +69,11 @@ class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
 
     final userCollection = firestore.collection(FirestoreCollections.user);
     final userDocRef = userCollection.doc(user.uid);
+    final projectCollection = firestore.collection(FirestoreCollections.project);
+    final taskCollection = firestore.collection(FirestoreCollections.task);
+    final projectsRef = await projectCollection.where('staffs', arrayContains: oldProfile.toMap()).get();
+    final tasksRef = await taskCollection.where('staffs', arrayContains: oldProfile.toMap()).get();
+    
     
     if (image != null) {
       final uploadTask = storage.ref('users/${user.uid}/').putFile(changeFilename(image, 'image'));
@@ -84,7 +93,47 @@ class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
     }
 
     if (updateData.isNotEmpty) {
-      await userDocRef.update(updateData);
+      await firestore.runTransaction(
+        (transaction) async {
+          transaction.update(userDocRef, updateData);
+
+          projectsRef.docs.forEach((projectSnapshot) {
+            var staffs = List<Map<String, dynamic>>.from(
+              projectSnapshot.data()['staffs']
+            );
+            staffs = staffs.map((staff) {
+              if (staff['id'] != oldProfile.id) return staff;
+              return { ...staff, ...updateData };
+            }).toList();
+            
+            transaction.update(
+              projectSnapshot.reference,
+              {
+                ...projectSnapshot.data(),
+                'staffs': staffs
+              }
+            );
+          });
+
+          tasksRef.docs.forEach((taskSnapshot) {
+            var staffs = List<Map<String, dynamic>>.from(
+              taskSnapshot.data()['staffs']
+            );
+            staffs = staffs.map((staff) {
+              if (staff['id'] != oldProfile.id) return staff;
+              return { ...staff, ...updateData };
+            }).toList();
+            
+            transaction.update(
+              taskSnapshot.reference,
+              {
+                ...taskSnapshot.data(),
+                'staffs': staffs
+              }
+            );
+          });
+        }
+      );
     }
   }
 

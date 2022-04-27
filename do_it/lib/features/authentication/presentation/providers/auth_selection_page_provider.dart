@@ -12,9 +12,7 @@ class AuthSelectionPageProvider with ChangeNotifier {
   void init(BuildContext context) {
     initRan = true;
     if (firebaseAuth.currentUser != null) {
-      print(firebaseAuth.currentUser == null);
-      print(firebaseAuth.currentUser!.email);
-      Navigator.of(context).pushNamed(
+      Navigator.of(context).pushReplacementNamed(
         RoutePaths.homePage
       );
     }

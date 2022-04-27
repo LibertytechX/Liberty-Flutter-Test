@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:do_it/core/constants/api.dart';
 import 'package:do_it/features/to_do/data/models/task.dart';
 import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,11 +16,13 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firestore;
   final FirebaseStorage storage;
+  final Dio httpClient;
 
   ToDoRemoteDataSourceImpl({
     required this.firebaseAuth, 
     required this.firestore,
-    required this.storage
+    required this.storage,
+    required this.httpClient
   });
   
   @override
@@ -100,13 +104,16 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
     if (user == null) throw Exception('Unauthorized');
 
     final projectCollection = firestore.collection(FirestoreCollections.project);
-    final projects = await projectCollection
-      .where('creator', isEqualTo: user.uid)
+    final projectsSnapshot = await projectCollection
       .get();
-    return projects.docs.map((project) => ProjectModel.fromSnapshot({
+    final projects = projectsSnapshot.docs.map((project) => ProjectModel.fromSnapshot({
       'id': project.id,
       ...project.data()
     })).toList();
+    return projects.where((project) {
+      return project.id == user.uid 
+        || project.staffs.where((staff) => staff.id == user.uid).isNotEmpty;
+    }).toList();
   }
 
   @override
@@ -119,6 +126,21 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
       ...task.toMap()..removeWhere((key, value) => key == 'id'),
       'creator': user!.uid
     });
+
+    final result = await httpClient.post(
+      APIEndpoints.scheduleMessage,
+      data: {
+        "contacts":["2348109833271"],
+        "message":"Hello Whisper is here",
+        // "send_date":"03-09-2021 00:42",
+      }
+    );
+
+    if (result.statusCode == 200 || result.statusCode == 201) {
+
+    } else {
+      throw Exception('An error occurred. Please try again');
+    }
   }
 
   @override
