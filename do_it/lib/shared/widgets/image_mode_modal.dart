@@ -1,4 +1,3 @@
-import 'package:do_it/core/constants/app_colors.dart';
 import 'package:do_it/core/constants/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

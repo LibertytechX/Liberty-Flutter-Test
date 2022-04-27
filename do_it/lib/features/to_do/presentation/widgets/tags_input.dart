@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:do_it/core/constants/texts.dart';
 import 'package:do_it/core/util/visual_alerts.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +64,7 @@ class _TagsInputState extends State<TagsInput> {
                         tagController.value.text.isEmpty 
                         && event.logicalKey == LogicalKeyboardKey.backspace
                         && _tags.isNotEmpty
+                        && event is RawKeyUpEvent
                       ) {
                         setState(() {
                           _tags.removeLast();

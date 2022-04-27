@@ -110,10 +110,12 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
       'id': project.id,
       ...project.data()
     })).toList();
-    return projects.where((project) {
-      return project.id == user.uid 
-        || project.staffs.where((staff) => staff.id == user.uid).isNotEmpty;
-    }).toList();
+    
+    return projects;
+    // return projects.where((project) {
+    //   return project.creator == user.uid
+    //     || project.staffs.where((staff) => staff.id == user.uid).isNotEmpty;
+    // }).toList();
   }
 
   @override
@@ -121,24 +123,33 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
     final user = firebaseAuth.currentUser;
     final taskCollection = firestore.collection(FirestoreCollections.task);
     final ref = taskCollection.doc();
+    final userCollection = firestore.collection(FirestoreCollections.user);
+    final userProfileRef = await userCollection.doc(user!.uid).get();
+    final userProfile = UserProfileModel.fromSnapshot({
+      ...userProfileRef.data()!,
+      'id': user.uid
+    });
+    final endDate = DateTime.parse(task.end);
     
     await ref.set({
       ...task.toMap()..removeWhere((key, value) => key == 'id'),
-      'creator': user!.uid
+      'creator': user.uid
     });
 
     final result = await httpClient.post(
       APIEndpoints.scheduleMessage,
       data: {
-        "contacts":["2348109833271"],
-        "message":"Hello Whisper is here",
-        // "send_date":"03-09-2021 00:42",
+        'contacts': [userProfile.phoneNumber],
+        'message': 'Hello ${userProfile.name}. You have not completed a task titled "${task.name}", set to expire today.',
+        'priority_route': false,
+        'campaign_name': 'DO IT',
+        'sender_id': 'Liberty',
+        'send_date':'${endDate.day}-${endDate.month}-${endDate.year} 08:00' // sends a message at 8am of the end date
       }
     );
 
-    if (result.statusCode == 200 || result.statusCode == 201) {
-
-    } else {
+    if (result.statusCode != 200 && result.statusCode != 201) {
+      await ref.delete();
       throw Exception('An error occurred. Please try again');
     }
   }
@@ -153,18 +164,31 @@ class ToDoRemoteDataSourceImpl extends ToDoRemoteDataSource {
     if (projectId != null) {
       tasks = await taskCollection
         .where('projectId', isEqualTo: projectId)
-        .where('creator', isEqualTo: user.uid)
         .get();
     } else {
-      tasks = await taskCollection
-        .where('creator', isEqualTo: user.uid)
-        .get();
+      tasks = await taskCollection.get();
     }
 
     return tasks.docs.map((task) => TaskModel.fromSnapshot({
       'id': task.id,
       ...task.data()
     })).toList();
+  }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTasksStream(String? projectId) {
+    final user = firebaseAuth.currentUser;
+    if (user == null) throw Exception('Unauthorized');
+
+    final taskCollection = firestore.collection(FirestoreCollections.task);
+    QuerySnapshot<Map<String, dynamic>> tasks;
+    if (projectId != null) {
+      return taskCollection
+        .where('projectId', isEqualTo: projectId)
+        .snapshots();
+    } else {
+      return taskCollection.snapshots();
+    }
   }
 }
 

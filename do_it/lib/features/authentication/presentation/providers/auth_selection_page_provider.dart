@@ -1,5 +1,4 @@
 import 'package:do_it/core/router/route_paths.dart';
-import 'package:do_it/core/util/custom_change_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

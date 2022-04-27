@@ -1,6 +1,5 @@
 import 'package:do_it/core/error/failures.dart';
 import 'package:do_it/core/router/route_paths.dart';
-import 'package:do_it/core/util/custom_change_notifier.dart';
 import 'package:do_it/core/util/visual_alerts.dart';
 import 'package:do_it/features/authentication/domain/usecases/create_account.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +12,7 @@ class CreateAccountPageProvider with ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   
+  String? phoneNumber;
   bool hidePassword = true;
   bool loading = false;
 
@@ -32,9 +32,10 @@ class CreateAccountPageProvider with ChangeNotifier {
     final params = CreateAccountParams(
       name: nameController.value.text, 
       email: emailController.value.text, 
-      phoneNumber: phoneController.value.text, 
+      phoneNumber: phoneNumber!.replaceAll('+', ''),
       password: passwordController.value.text
     );
+
     final response = await createAccount(params);
     response.fold(
       (l) {
